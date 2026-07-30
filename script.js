@@ -9,7 +9,7 @@ for (let i = 1; i <= TOTAL_IMAGES; i++) {
 
 shuffle(images);
 
-showImage();
+showImage(true);
 
 document.getElementById("nextButton").addEventListener("click", () => {
 
@@ -21,20 +21,27 @@ document.getElementById("nextButton").addEventListener("click", () => {
 
             shuffle(images);
             current = 0;
-            showImage();
+            showImage(true);
 
         }
 
         return;
     }
 
-    showImage();
+    showImage(false);
 
 });
 
-function showImage() {
+function showImage(firstLoad = false) {
 
     const img = document.getElementById("image");
+
+    if (firstLoad) {
+        img.src = "images/" + images[current];
+        document.getElementById("counter").innerHTML =
+            (current + 1) + " / " + images.length;
+        return;
+    }
 
     img.classList.add("flip");
 
@@ -45,11 +52,9 @@ function showImage() {
         document.getElementById("counter").innerHTML =
             (current + 1) + " / " + images.length;
 
-    }, 175);
-
-    setTimeout(() => {
-
-        img.classList.remove("flip");
+        setTimeout(() => {
+            img.classList.remove("flip");
+        }, 50);
 
     }, 350);
 
