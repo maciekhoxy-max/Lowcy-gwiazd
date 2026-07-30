@@ -13,25 +13,51 @@ h1 {
 
 #counter {
     font-size: 22px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-weight: bold;
+}
+
+#lives {
+    font-size: 32px;
+    margin: 10px 0;
+    letter-spacing: 6px;
+}
+
+#cooldown {
+    font-size: 28px;
+    color: #ff5a5a;
+    font-weight: bold;
+    height: 35px;
+    margin-bottom: 15px;
 }
 
 .imageBox {
     width: 90%;
     max-width: 900px;
     margin: auto;
+
     perspective: 1000px;
+
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+
+    box-shadow: 0 0 25px rgba(0,0,0,.45);
 }
 
 #image {
+    display: block;
     width: 100%;
     max-height: 70vh;
-    object-fit: contain;
-    background: black;
-    border-radius: 10px;
 
-    transition: transform 0.35s ease, opacity 0.35s ease;
+    object-fit: contain;
+
+    background: #000;
+
+    transition:
+        transform .35s ease,
+        opacity .35s ease;
+
     transform-origin: center;
     backface-visibility: hidden;
 }
@@ -43,35 +69,39 @@ h1 {
 
 #nextButton {
     margin: 30px;
+
     padding: 16px 40px;
+
     font-size: 22px;
+
     border: none;
     border-radius: 10px;
+
     cursor: pointer;
+
     background: #f4c542;
     color: black;
+
     font-weight: bold;
 
-    transition: background 0.2s ease, transform 0.15s ease;
+    transition:
+        background .2s ease,
+        transform .15s ease;
 }
 
-#nextButton:hover {
+#nextButton:hover:not(:disabled) {
     background: #ffd84d;
     transform: scale(1.05);
 }
 
-#nextButton:active {
-    transform: scale(0.96);
-}
-#lives{
-    font-size:32px;
-    margin:10px 0;
+#nextButton:active:not(:disabled) {
+    transform: scale(.96);
 }
 
-#cooldown{
-    font-size:28px;
-    color:#ff5a5a;
-    font-weight:bold;
-    height:35px;
-    margin-bottom:10px;
+#nextButton:disabled {
+    background: #555;
+    color: #bfbfbf;
+    cursor: not-allowed;
+    transform: none;
+    opacity: .8;
 }
