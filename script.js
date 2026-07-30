@@ -45,11 +45,13 @@ function showImage() {
         document.getElementById("counter").innerHTML =
             (current + 1) + " / " + images.length;
 
+    }, 175);
+
+    setTimeout(() => {
+
         img.classList.remove("flip");
 
-    }, 180);
-
-}
+    }, 350);
 
 }
 
