@@ -14,12 +14,14 @@ h1 {
 #counter {
     font-size: 22px;
     margin-bottom: 20px;
+    font-weight: bold;
 }
 
 .imageBox {
     width: 90%;
     max-width: 900px;
     margin: auto;
+    perspective: 1000px;
 }
 
 #image {
@@ -28,6 +30,15 @@ h1 {
     object-fit: contain;
     background: white;
     border-radius: 10px;
+
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    transform-origin: center;
+    backface-visibility: hidden;
+}
+
+.flip {
+    transform: rotateY(90deg);
+    opacity: 0;
 }
 
 #nextButton {
@@ -40,17 +51,15 @@ h1 {
     background: #f4c542;
     color: black;
     font-weight: bold;
+
+    transition: background 0.2s ease, transform 0.15s ease;
 }
 
 #nextButton:hover {
     background: #ffd84d;
-}
-#image{
-    transition: transform 0.35s ease, opacity 0.35s ease;
-    transform-origin: center;
+    transform: scale(1.05);
 }
 
-.flip{
-    transform: rotateY(90deg);
-    opacity:0;
+#nextButton:active {
+    transform: scale(0.96);
 }
