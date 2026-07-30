@@ -34,10 +34,22 @@ document.getElementById("nextButton").addEventListener("click", () => {
 
 function showImage() {
 
-    document.getElementById("image").src = "images/" + images[current];
+    const img = document.getElementById("image");
 
-    document.getElementById("counter").innerHTML =
-        (current + 1) + " / " + images.length;
+    img.classList.add("flip");
+
+    setTimeout(() => {
+
+        img.src = "images/" + images[current];
+
+        document.getElementById("counter").innerHTML =
+            (current + 1) + " / " + images.length;
+
+        img.classList.remove("flip");
+
+    }, 180);
+
+}
 
 }
 
