@@ -45,3 +45,12 @@ h1 {
 #nextButton:hover {
     background: #ffd84d;
 }
+#image{
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    transform-origin: center;
+}
+
+.flip{
+    transform: rotateY(90deg);
+    opacity:0;
+}
