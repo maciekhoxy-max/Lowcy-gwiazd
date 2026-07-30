@@ -4,7 +4,6 @@ const COOLDOWN = 30; // sekundy
 
 let images = [];
 let current = 0;
-
 let lives = MAX_LIVES;
 
 const image = document.getElementById("image");
@@ -13,6 +12,7 @@ const nextButton = document.getElementById("nextButton");
 const livesDiv = document.getElementById("lives");
 const cooldownDiv = document.getElementById("cooldown");
 
+// Tworzenie listy obrazów
 for (let i = 1; i <= TOTAL_IMAGES; i++) {
     images.push(i + ".png");
 }
@@ -21,31 +21,29 @@ shuffle(images);
 
 showImage(true);
 updateLives();
-
 checkCooldown();
 
 nextButton.addEventListener("click", () => {
 
     if (nextButton.disabled) return;
 
+    // Następny obraz
+    current++;
+
+    if (current >= images.length) {
+        shuffle(images);
+        current = 0;
+    }
+
+    showImage();
+
+    // Odejmujemy życie dopiero po pokazaniu obrazka
     lives--;
     updateLives();
 
     if (lives <= 0) {
         startCooldown();
-        return;
     }
-
-    current++;
-
-    if (current >= images.length) {
-
-        shuffle(images);
-        current = 0;
-
-    }
-
-    showImage();
 
 });
 
@@ -79,9 +77,7 @@ function updateLives() {
     let txt = "";
 
     for (let i = 0; i < MAX_LIVES; i++) {
-
-        txt += i < lives ? "⭐" : "☆";
-
+        txt += (i < lives) ? "⭐" : "☆";
     }
 
     livesDiv.innerHTML = txt;
@@ -91,7 +87,7 @@ function updateLives() {
 function startCooldown() {
 
     nextButton.disabled = true;
-    nextButton.innerHTML = "ZABLOKOWANE";
+    nextButton.innerHTML = "⏳ Poczekaj...";
 
     const end = Date.now() + COOLDOWN * 1000;
 
@@ -115,13 +111,16 @@ function checkCooldown() {
     }
 
     nextButton.disabled = true;
-    nextButton.innerHTML = "ZABLOKOWANE";
+    nextButton.innerHTML = "⏳ Poczekaj...";
 
     runCountdown(Number(end));
 
 }
 
 function runCountdown(end) {
+
+    cooldownDiv.innerHTML =
+        "Nowa pula za: " + Math.ceil((end - Date.now()) / 1000) + " s";
 
     const interval = setInterval(() => {
 
@@ -131,8 +130,6 @@ function runCountdown(end) {
 
             clearInterval(interval);
 
-            cooldownDiv.innerHTML = "";
-
             lives = MAX_LIVES;
             updateLives();
 
@@ -141,6 +138,12 @@ function runCountdown(end) {
 
             localStorage.removeItem("cooldownEnd");
 
+            cooldownDiv.innerHTML = "✅ Odblokowano!";
+
+            setTimeout(() => {
+                cooldownDiv.innerHTML = "";
+            }, 1500);
+
             return;
 
         }
@@ -148,7 +151,7 @@ function runCountdown(end) {
         cooldownDiv.innerHTML =
             "Nowa pula za: " + left + " s";
 
-    }, 200);
+    }, 1000);
 
 }
 
