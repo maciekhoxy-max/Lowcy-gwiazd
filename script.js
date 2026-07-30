@@ -1,7 +1,17 @@
 const TOTAL_IMAGES = 20;
+const MAX_LIVES = 5;
+const COOLDOWN = 30; // sekundy
 
 let images = [];
 let current = 0;
+
+let lives = MAX_LIVES;
+
+const image = document.getElementById("image");
+const counter = document.getElementById("counter");
+const nextButton = document.getElementById("nextButton");
+const livesDiv = document.getElementById("lives");
+const cooldownDiv = document.getElementById("cooldown");
 
 for (let i = 1; i <= TOTAL_IMAGES; i++) {
     images.push(i + ".png");
@@ -10,53 +20,135 @@ for (let i = 1; i <= TOTAL_IMAGES; i++) {
 shuffle(images);
 
 showImage(true);
+updateLives();
 
-document.getElementById("nextButton").addEventListener("click", () => {
+checkCooldown();
+
+nextButton.addEventListener("click", () => {
+
+    if (nextButton.disabled) return;
+
+    lives--;
+    updateLives();
+
+    if (lives <= 0) {
+        startCooldown();
+        return;
+    }
 
     current++;
 
     if (current >= images.length) {
 
-        if (confirm("Wyświetlono wszystkie grafiki.\nRozpocząć od nowa?")) {
+        shuffle(images);
+        current = 0;
 
-            shuffle(images);
-            current = 0;
-            showImage(true);
-
-        }
-
-        return;
     }
 
-    showImage(false);
+    showImage();
 
 });
 
 function showImage(firstLoad = false) {
 
-    const img = document.getElementById("image");
-
     if (firstLoad) {
-        img.src = "images/" + images[current];
-        document.getElementById("counter").innerHTML =
-            (current + 1) + " / " + images.length;
+
+        image.src = "images/" + images[current];
+        counter.innerHTML = (current + 1) + " / " + images.length;
         return;
+
     }
 
-    img.classList.add("flip");
+    image.classList.add("flip");
 
     setTimeout(() => {
 
-        img.src = "images/" + images[current];
-
-        document.getElementById("counter").innerHTML =
-            (current + 1) + " / " + images.length;
+        image.src = "images/" + images[current];
+        counter.innerHTML = (current + 1) + " / " + images.length;
 
         setTimeout(() => {
-            img.classList.remove("flip");
+            image.classList.remove("flip");
         }, 50);
 
     }, 350);
+
+}
+
+function updateLives() {
+
+    let txt = "";
+
+    for (let i = 0; i < MAX_LIVES; i++) {
+
+        txt += i < lives ? "⭐" : "☆";
+
+    }
+
+    livesDiv.innerHTML = txt;
+
+}
+
+function startCooldown() {
+
+    nextButton.disabled = true;
+    nextButton.innerHTML = "ZABLOKOWANE";
+
+    const end = Date.now() + COOLDOWN * 1000;
+
+    localStorage.setItem("cooldownEnd", end);
+
+    runCountdown(end);
+
+}
+
+function checkCooldown() {
+
+    const end = localStorage.getItem("cooldownEnd");
+
+    if (!end) return;
+
+    if (Date.now() >= Number(end)) {
+
+        localStorage.removeItem("cooldownEnd");
+        return;
+
+    }
+
+    nextButton.disabled = true;
+    nextButton.innerHTML = "ZABLOKOWANE";
+
+    runCountdown(Number(end));
+
+}
+
+function runCountdown(end) {
+
+    const interval = setInterval(() => {
+
+        const left = Math.ceil((end - Date.now()) / 1000);
+
+        if (left <= 0) {
+
+            clearInterval(interval);
+
+            cooldownDiv.innerHTML = "";
+
+            lives = MAX_LIVES;
+            updateLives();
+
+            nextButton.disabled = false;
+            nextButton.innerHTML = "Następne";
+
+            localStorage.removeItem("cooldownEnd");
+
+            return;
+
+        }
+
+        cooldownDiv.innerHTML =
+            "Nowa pula za: " + left + " s";
+
+    }, 200);
 
 }
 
