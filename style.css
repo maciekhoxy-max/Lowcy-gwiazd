@@ -63,3 +63,15 @@ h1 {
 #nextButton:active {
     transform: scale(0.96);
 }
+#lives{
+    font-size:32px;
+    margin:10px 0;
+}
+
+#cooldown{
+    font-size:28px;
+    color:#ff5a5a;
+    font-weight:bold;
+    height:35px;
+    margin-bottom:10px;
+}
