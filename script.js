@@ -68,7 +68,7 @@ function showImage(firstLoad = false) {
             image.classList.remove("flip");
         }, 50);
 
-    }, 350);
+    }, 150);
 
 }
 
