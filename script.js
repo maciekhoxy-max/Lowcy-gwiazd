@@ -1,6 +1,6 @@
 const TOTAL_IMAGES = 20;
 const MAX_LIVES = 5;
-const COOLDOWN = 30; // sekundy
+const COOLDOWN = 15; // sekundy
 
 let images = [];
 let current = 0;
